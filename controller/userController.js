@@ -1,6 +1,6 @@
 
+const fs = require('fs')
 const users = JSON.parse(fs.readFileSync('./users.json'))
-
 exports.getoneUers = (req,res) =>{
 
     const idusers  = req.params.id * 1
