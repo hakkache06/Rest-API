@@ -1,0 +1,14 @@
+{
+  "name": "toursapp",
+  "version": "1.0.0",
+  "description": "get add from api",
+  "main": "App.js",
+  "scripts": {
+    "test": "nodemon App.js"
+  },
+  "author": "Yhakkach",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
