@@ -1,5 +1,6 @@
 
 const express = require('express')
+const fs = require('fs')
 const router = express.Router()
 
 const tours = JSON.parse(fs.readFileSync('./tours.json'))
@@ -31,8 +32,8 @@ const addTours = (req,res)=>{
 
 const getoneTours = (req,res) =>{
 
-const newid = req.params.id * 1
-const findtour = tours.find(el => el.id == newid)
+    const newid = req.params.id * 1
+    const findtour = tours.find(el => el.id == newid)
 
 if(findtour)
 {

@@ -1,5 +1,8 @@
+
 const express = require('express')
+const fs = require('fs')
 const router  = express.Router()
+const users = JSON.parse(fs.readFileSync('./users.json'))
 
 const getoneUers = (req,res) =>{
 

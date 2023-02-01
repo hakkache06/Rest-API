@@ -2,10 +2,8 @@
 const express = require('express')
 const app = express()
 
-const fs = require('fs')
 
-const users = JSON.parse(fs.readFileSync('./users.json'))
-const toursrouter = require('./Routers/userrouter')
+const toursrouter = require('./Routers/toursrouter')
 const usersrouter = require('./Routers/userrouter')
 app.use(express.json())
 
