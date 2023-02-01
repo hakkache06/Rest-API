@@ -5,7 +5,6 @@ const app = express()
 const toursrouter = require('./Routers/toursrouter')
 const usersrouter = require('./Routers/userrouter')
 
-app.use('moragn')
 app.use(express.json())
 app.use(express.static(`${__dirname}/public`))
 
@@ -15,3 +14,4 @@ app.use('/users',usersrouter)
 module.exports = app
 
 // serving static file
+// process.env 
