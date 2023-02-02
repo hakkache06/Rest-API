@@ -6,7 +6,11 @@ const app = require('./App')
 dotenv.config({path : './config.env'})
 
 console.log(process.env)
-const port = 8080
+const port = process.env.PORT
 app.listen(port,()=>{
     console.log('Listen port 8080')
 })
+
+// Mongodb
+// Document based / scalable / Flexible / Performant
+// Free and open-source

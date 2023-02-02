@@ -6,6 +6,7 @@ const toursrouter = require('./Routers/toursrouter')
 const usersrouter = require('./Routers/userrouter')
 
 app.use(express.json())
+//static
 app.use(express.static(`${__dirname}/public`))
 
 app.use('/tours',toursrouter)
