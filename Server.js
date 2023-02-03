@@ -5,19 +5,22 @@ const app = require('./App')
 // Add Env
 dotenv.config({path : './config.env'})
 
-const DB = process.env.DATA_BASE.replace('<P>',process.env.PASSWORD)
 
+// Connection DataBase
+const DB = process.env.DATA_BASE.replace('<P>',process.env.PASSWORD)
 mongoose.connect(DB,{
     useNewUrlParser : true,
     useCreateIndex : true,
     useFindAndModify : false,
 }).then(()=>{console.log('success')})
+/// fin Connection DataBase
 
-
+/// Create Schema
 const   tourSchema = new mongoose.Schema({
     name : {
         type: String,
-        required : [true,'must have a name']
+        required : [true,'must have a name'],
+        unique : true
     },
     rating : {
         type: Number,
@@ -28,7 +31,23 @@ const   tourSchema = new mongoose.Schema({
          required : [true,'A tour must have a price']   
     }
 })
+/// fin Create Schema
 
+// Add Model
+const tourmodel = mongoose.model("Tours",tourSchema)
+
+
+/// add Data
+
+const newtour = new tourmodel({
+    name : 'OpThe Forest Hiker',
+    rating : 4.7,
+    price : 497
+})
+
+newtour.save().then(doc=> {console.log(doc)}).catch(err=>{console.log(err)})
+//fin add data
+//tourmodel.insertMany({})
 const port = process.env.PORT
 app.listen(port,()=>{
     console.log('Listen port 8080')
