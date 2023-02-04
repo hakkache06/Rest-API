@@ -205,59 +205,5 @@
       "2022-01-16,10:00",
       "2022-12-12,10:00"
     ]
-  },
-  {
-    "id": 9,
-    "name": "po",
-    "duration": 78,
-    "maxGroupSize": 0,
-    "difficulty": "easy"
-  },
-  {
-    "id": 10,
-    "name": "po",
-    "duration": 78,
-    "maxGroupSize": 0,
-    "difficulty": "easy"
-  },
-  {
-    "id": 11,
-    "name": "po",
-    "duration": 78,
-    "maxGroupSize": 0,
-    "difficulty": "easy"
-  },
-  {
-    "id": 12,
-    "name": "po",
-    "duration": 78,
-    "maxGroupSize": 0,
-    "difficulty": "easy"
-  },
-  {
-    "id": 13,
-    "name": "po",
-    "duration": 78,
-    "maxGroupSize": 0,
-    "difficulty": "easy"
-  },
-  {
-    "id": 14,
-    "name": "po",
-    "duration": 78,
-    "maxGroupSize": 0,
-    "difficulty": "easy"
-  },
-  {
-    "id": 15,
-    "Data": "12"
-  },
-  {
-    "id": 16,
-    "Data": "12"
-  },
-  {
-    "id": 17,
-    "Data": "12"
   }
 ]
