@@ -8,5 +8,7 @@ router.route('/')
 
 router.route('/:id')
 .get(tourcon.getoneTours)
+.patch(tourcon.updatetours)
+.delete(tourcon.deleteTours)
 
 module.exports = router

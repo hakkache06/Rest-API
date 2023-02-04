@@ -92,12 +92,11 @@ exports.addTours = async (req,res)=>{
     }
 }
 
- exports.getoneTours = (req,res) =>{
+ exports.getoneTours = async (req,res) =>{
 
     try{
         
-        console.log(req.params.id)
-        const getoneTours = Tour.findOne({_id: req.params.id})
+        const getoneTours =  await Tour.findById(req.params.id)
         res.status(200).json({
             status : 'success',
             data :{
@@ -105,12 +104,53 @@ exports.addTours = async (req,res)=>{
             } 
         })
 
-
     }catch(err){
+        console.log(err)
         res.status(400).json({
             status :  'fail',
             message : err
         })
     }
  
+}
+exports.updatetours = async (req,res) => {
+try {
+      //const Tourupdate = Tour.updateOne( {_id : req.params.id} ,{$set : {price : req.body.price }})  
+   const updatetour = await Tour.findByIdAndUpdate(req.params.id, req.body , {
+        new:true,
+        runValidators: true
+    })
+    res.status(200).json({
+        status : 'success',
+        data :{
+            updatetour
+        }
+    })
+} catch (err) {
+    console.log(err)
+    res.status(400).json({
+        status :  'fail',
+        message : err
+    })
+}
+}
+
+exports.deleteTours = async (req,res)=>{
+
+    try {
+        const deletone = await Tour.findByIdAndDelete(req.params.id)
+        console.log(req.params.id)
+        res.status(204).json({
+            status : 'success',
+            data : null
+        })
+        
+    } catch (err) {
+        console.log(err)
+        res.status(404).json({
+            status : 'fail',
+            message : err
+        })
+    }
+
 }
