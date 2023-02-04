@@ -59,7 +59,13 @@ exports.GetAllTours = async (req,res) =>{
 
     try {
 
-    const AllTours = await Tour.find()
+    //Filtering with query
+    const FillterObject = {...req.query} // Hardcopy
+    const excludedFields = ['page','sort','limit','fields']
+    excludedFields.forEach(el => delete FillterObject[el])
+
+    const AllTours = await Tour.find(FillterObject)
+    //console.log(req.query)
     res.status(200).json({
         status : 'success',
         data : {
