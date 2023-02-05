@@ -67,7 +67,10 @@ app.listen(port,()=>{
 // Mongoose schema : model data by describing the structure of the data
 // Mongoose Model : a warpper of the schema , providing interface to the database for crud operations
 // Schema -> Model
-
+// Mongosse Middleware
+    // use after saving
+    // pre / post hooks
+    // document , query ,aggregate , and model model middlware
 /*
     MVC ARCHITECTURE IN OUR EXPRESS APP 
 

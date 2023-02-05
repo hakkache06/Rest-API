@@ -64,13 +64,18 @@ exports.GetAllTours = async (req,res) =>{
     const FillterObject = {...req.query} // Hardcopy
     const excludedFields = ['page','sort','limit','fields']
     excludedFields.forEach(el => delete FillterObject[el])
+
     // Advanced filtering 
-    
     let queryStr = JSON.stringify(FillterObject)
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`)
-    console.log(queryStr)
 
-    const AllTours = await Tour.find(JSON.parse(queryStr))
+    // 2) Sorting
+    let AllTours = await Tour.find(JSON.parse(queryStr))
+
+    if(req.query.sort)
+    {
+        AllTours = Tour.find(JSON.parse(queryStr)).sort(req.query.sort)
+    }
 
     res.status(200).json({
         status : 'success',
