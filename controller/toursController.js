@@ -1,4 +1,5 @@
 
+const { query } = require('express')
 const Tour = require('../Modules/tourmodule')
 
 //const fs = require('fs')
@@ -63,9 +64,14 @@ exports.GetAllTours = async (req,res) =>{
     const FillterObject = {...req.query} // Hardcopy
     const excludedFields = ['page','sort','limit','fields']
     excludedFields.forEach(el => delete FillterObject[el])
+    // Advanced filtering 
+    
+    let queryStr = JSON.stringify(FillterObject)
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`)
+    console.log(queryStr)
 
-    const AllTours = await Tour.find(FillterObject)
-    //console.log(req.query)
+    const AllTours = await Tour.find(JSON.parse(queryStr))
+
     res.status(200).json({
         status : 'success',
         data : {

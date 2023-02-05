@@ -1,0 +1,19 @@
+
+
+
+
+
+
+
+Shared Hosting =>  Folder in server (limit)
+Solve DataCentre
+DataCentre => send login (Server)  (!)
+Utility Computing (use Resourcces / des) => Cloud  (amazon web services / google cloud)
+Cloud => (!) {Add data manually} (order > 10000)
+infastructure as Code => create Server use Script (Code)
+Tools work with Iac {Terraform , Ansible}
+
+
+Terraform automate infastructure deployment 
+manage your infastructure
+manage servicess that run on the indigo
