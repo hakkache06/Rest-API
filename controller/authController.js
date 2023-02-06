@@ -1,5 +1,5 @@
 const UserModel = require('../Modules/userModule')
-const passwordHash = require('password-hash')
+const jwt = require('jsonwebtoken')
 
 // function hashpassword(req)
 // {
@@ -9,11 +9,24 @@ const passwordHash = require('password-hash')
 exports.addUsers = async (req,res)=>{
 
     try {
-        const Addone = await UserModel.create(req.body)
+        const newuser = await UserModel.create({
+            name:req.body.name ,
+            email:req.body.email,
+            password:req.body.password,
+            passwordConfirm:req.body.passwordConfirm
+        })
+
+     
+        // Generate Token
+        const token = jwt.sign({id : newuser._id},process.env.JWT,{
+            expiresIn : process.env.JWT_EXPIRES
+        })
+
         res.status(200).json({
         status : 'success',
+        token,
         data :{
-                Addone
+                newuser
             }
         })
 
