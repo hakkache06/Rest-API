@@ -1,6 +1,6 @@
 const UserModel = require('../Modules/userModule')
 const jwt = require('jsonwebtoken')
-
+const bcrypt = require('bcryptjs')
 // function hashpassword(req)
 // {
 //     req.body.password = passwordHash.generate(req.body.password)
@@ -55,3 +55,21 @@ exports.deleteusers = async (req,res)=>{
         })
     }
 }  
+
+exports.login = async (req,res)=>{
+
+        // 1) check if user exists && password correct 
+        const {email, passowrd} = req.body
+
+        if(!email || !passowrd)
+        {
+            res.status(4004).json({
+                status : 'fail',
+                message : 'Please provide email and passoerd'
+
+            })
+        }
+
+        const login = await UserModel.findOne({email : req.body.email})
+
+    } 
