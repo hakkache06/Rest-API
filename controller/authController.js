@@ -6,7 +6,14 @@ const bcrypt = require('bcryptjs')
 //     req.body.password = passwordHash.generate(req.body.password)
 //     req.body.passwordConfirm = passwordHash.generate(req.body.passwordConfirm)
 // }
+
+const createtoken =  id => 
+    jwt.sign({id},process.env.JWT,{
+    expiresIn : process.env.JWT_EXPIRES
+})
 exports.addUsers = async (req,res)=>{
+
+
 
     try {
         const newuser = await UserModel.create({
@@ -16,12 +23,8 @@ exports.addUsers = async (req,res)=>{
             passwordConfirm:req.body.passwordConfirm
         })
 
-     
         // Generate Token
-        const token = jwt.sign({id : newuser._id},process.env.JWT,{
-            expiresIn : process.env.JWT_EXPIRES
-        })
-
+        const token = createtoken(newuser._id)
         res.status(200).json({
         status : 'success',
         token,
@@ -60,16 +63,28 @@ exports.login = async (req,res)=>{
 
         // 1) check if user exists && password correct 
         const {email, passowrd} = req.body
+        const token = createtoken(newuser._id);
+        const user = await UserModel.findOne({email})
 
         if(!email || !passowrd)
         {
-            res.status(4004).json({
-                status : 'fail',
-                message : 'Please provide email and passoerd'
-
+            res.status(404).json({
+                status : 'email not found',
+            })
+        }
+        if(!user || !await user.correctPassword(passowrd,user._id))
+        {
+            res.status(401).json({
+                status : 'user or password not correct',
             })
         }
 
-        const login = await UserModel.findOne({email : req.body.email})
+        res.status(200).json({
+            status : 'success',
+            token
+        })
+        
+        
+     
 
     } 
