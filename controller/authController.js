@@ -59,32 +59,37 @@ exports.deleteusers = async (req,res)=>{
     }
 }  
 
-exports.login = async (req,res)=>{
+const   catchAsync = fn => {
+    return (req,res,next) => {
+        fn(req,res,next).catch(err=> next(err))
+    }
+}
+
+exports.login =  catchAsync  (async (req,res)=>{
 
         // 1) check if user exists && password correct 
-        const {email, passowrd} = req.body
-        const token = createtoken(newuser._id);
-        const user = await UserModel.findOne({email})
-
-        if(!email || !passowrd)
+        const {email, password} = req.body
+        const user = await UserModel.findOne({email}).select('+password')
+            
+        console.log(user)
+        if(!email || !password)
         {
             res.status(404).json({
                 status : 'email not found',
             })
         }
-        if(!user || !await user.correctPassword(passowrd,user._id))
+        else if(! user ||! (user.correctPassword(password,user.password)))
         {
             res.status(401).json({
                 status : 'user or password not correct',
             })
         }
-
-        res.status(200).json({
-            status : 'success',
-            token
-        })
-        
-        
-     
-
+        else {
+            const token = createtoken(user._id);
+            res.status(200).json({
+                status : 'success',
+                token
+            })
+        }
     } 
+)
