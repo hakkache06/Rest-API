@@ -1,21 +1,25 @@
 const UserModel = require('../Modules/userModule')
 const jwt = require('jsonwebtoken')
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcrypt')
 // function hashpassword(req)
 // {
-//     req.body.password = passwordHash.generate(req.body.password)
-//     req.body.passwordConfirm = passwordHash.generate(req.body.passwordConfirm)
-// }
-
-const createtoken =  id => 
+    //     req.body.password = passwordHash.generate(req.body.password)
+    //     req.body.passwordConfirm = passwordHash.generate(req.body.passwordConfirm)
+    // }
+    
+    const   catchAsync = fn => {
+        return (req,res,next) => {
+            fn(req,res,next).catch(err=> next(err))
+        }
+    }
+    
+    const createtoken =  id => 
     jwt.sign({id},process.env.JWT,{
     expiresIn : process.env.JWT_EXPIRES
 })
-exports.addUsers = async (req,res)=>{
 
+exports.addUsers =  catchAsync (async (req,res)=>{
 
-
-    try {
         const newuser = await UserModel.create({
             name:req.body.name ,
             email:req.body.email,
@@ -33,15 +37,7 @@ exports.addUsers = async (req,res)=>{
             }
         })
 
-    } catch (error) {
-        res.status(404).json({
-            status : 'fail',
-            data :{
-                    error
-                }
-            })
-    }   
-}
+})
 exports.deleteusers = async (req,res)=>{
 
     try {
@@ -59,37 +55,42 @@ exports.deleteusers = async (req,res)=>{
     }
 }  
 
-const   catchAsync = fn => {
-    return (req,res,next) => {
-        fn(req,res,next).catch(err=> next(err))
-    }
-}
 
-exports.login =  catchAsync  (async (req,res)=>{
+exports.login = catchAsync  (async (req,res)=>{
 
         // 1) check if user exists && password correct 
         const {email, password} = req.body
-        const user = await UserModel.findOne({email}).select('+password')
-            
-        console.log(user)
+        
         if(!email || !password)
         {
             res.status(404).json({
                 status : 'email not found',
             })
         }
-        else if(! user ||! (user.correctPassword(password,user.password)))
+        const user = await UserModel.findOne({email}).select('+password')
+
+        if(!user || ! (user.correctPassword(password,user.password)))
         {
             res.status(401).json({
                 status : 'user or password not correct',
             })
         }
-        else {
-            const token = createtoken(user._id);
+        const token = createtoken(user._id);
             res.status(200).json({
                 status : 'success',
                 token
             })
-        }
-    } 
-)
+    } )
+
+    exports.protect = async (req,res,next)=>{
+
+        // 1) Getting token and check of it's
+
+        // 2) Verfication
+
+        // 3) check if user still exists
+
+        // 4) Check if user changed password after use jwt 
+
+        //next()
+    }
