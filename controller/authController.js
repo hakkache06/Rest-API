@@ -1,6 +1,7 @@
 const UserModel = require('../Modules/userModule')
 const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
+const { token } = require('morgan')
 // function hashpassword(req)
 // {
     //     req.body.password = passwordHash.generate(req.body.password)
@@ -56,31 +57,23 @@ exports.deleteusers = async (req,res)=>{
 }  
 
 
-exports.login = catchAsync  (async (req,res)=>{
+exports.login = async (req,res,next)=>{
 
-        // 1) check if user exists && password correct 
-        const {email, password} = req.body
-        
-        if(!email || !password)
-        {
-            res.status(404).json({
-                status : 'email not found',
-            })
-        }
-        const user = await UserModel.findOne({email}).select('+password')
-
-        if(!user || ! (user.correctPassword(password,user.password)))
-        {
-            res.status(401).json({
-                status : 'user or password not correct',
-            })
-        }
-        const token = createtoken(user._id);
-            res.status(200).json({
-                status : 'success',
-                token
-            })
-    } )
+        // 1) Check if user exists && password
+            const {email,password} = req.body
+            if(!email || ! password)
+                res.status(404).json({status:'fail',message:'password or user not found'})
+            // 2) check if user exists && password correct 
+            const user = await UserModel.findOne({email}).select('+password')
+            if(!user || ! (await user.correctPassword(password,user.password)))
+                res.status(404).json({status:'fail',message:'Password not correct'})
+        // 3) if everthing ok send token 
+                const token = createtoken(user._id)
+                res.status(200).json({
+                    status : 'success',
+                    token
+                })
+    } 
 
     exports.protect = async (req,res,next)=>{
 

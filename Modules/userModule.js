@@ -38,7 +38,6 @@ const userSchema = new mongoose.Schema({
 
 // Document Middleware : run before .save() and .create 
 userSchema.pre('save',async function(next){
-    if (!user.isModified("password")) return next();
     this.password = await bcrypt.hash(this.password,12)
     this.passwordConfirm = undefined
     next()
@@ -46,6 +45,8 @@ userSchema.pre('save',async function(next){
 //
 // instance method be available on all documents \\
 userSchema.methods.correctPassword =  async function (candidate, userpassword){
+    
+    console.log(user)
     return await bcrypt.compare(candidate,userpassword)
 }
 const user  = mongoose.model('Users',userSchema)
