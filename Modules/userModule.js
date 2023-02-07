@@ -44,9 +44,7 @@ userSchema.pre('save',async function(next){
 })
 //
 // instance method be available on all documents \\
-userSchema.methods.correctPassword =  async function (candidate, userpassword){
-    
-    console.log(user)
+userSchema.methods.correctPassword =  async function (candidate, userpassword){    
     return await bcrypt.compare(candidate,userpassword)
 }
 const user  = mongoose.model('Users',userSchema)

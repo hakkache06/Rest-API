@@ -67,17 +67,27 @@ exports.login = async (req,res,next)=>{
             const user = await UserModel.findOne({email}).select('+password')
             if(!user || ! (await user.correctPassword(password,user.password)))
                 res.status(404).json({status:'fail',message:'Password not correct'})
-        // 3) if everthing ok send token 
+            else 
+            {
+                // 3) if everthing ok send token 
                 const token = createtoken(user._id)
                 res.status(200).json({
                     status : 'success',
                     token
                 })
+            }
     } 
 
+    /// Protect Route 
     exports.protect = async (req,res,next)=>{
 
         // 1) Getting token and check of it's
+        let token;
+        if(req.headers.authorization && req.headers.authorization.startsWith('Bearer'))
+            token =  req.headers.authorization.split(' ')[1]
+            
+        if(!token)
+            res.status(401).json({status : 'fail' , message :'you are not log to get access'})
 
         // 2) Verfication
 
@@ -85,5 +95,5 @@ exports.login = async (req,res,next)=>{
 
         // 4) Check if user changed password after use jwt 
 
-        //next()
+        next()
     }
