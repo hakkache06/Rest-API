@@ -1,4 +1,5 @@
 const UserModel = require('../Modules/userModule')
+const   {promisify} =  require('util')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const { token } = require('morgan')
@@ -84,15 +85,23 @@ exports.login = async (req,res,next)=>{
         // 1) Getting token and check of it's
         let token;
         if(req.headers.authorization && req.headers.authorization.startsWith('Bearer'))
+        {
             token =  req.headers.authorization.split(' ')[1]
+            console.log(token)
+            console.log(req.headers)
+        }
             
-        if(!token)
-            res.status(401).json({status : 'fail' , message :'you are not log to get access'})
 
-        // 2) Verfication
+        // if(!token)
+        //     res.status(401).json({status : 'fail' , message :'you are not log to get access'})
 
-        // 3) check if user still exists
-
+        // // 2) Verfication
+        //     const decode = jwt.verify(token,process.env.JWT)
+    
+        // // 3) check if user still exists
+        //     const freshuser = UserModel.findById(decode.id)
+        //     if(!freshuser)
+        //         res.status(200).josn('othman token ')
         // 4) Check if user changed password after use jwt 
 
         next()
